@@ -163,96 +163,103 @@ class HomePage extends StatelessWidget {
           const SizedBox(height: 14),
           _theBasic(),
           const SizedBox(height: 14),
+          _allSession(gridViewContents),
+          const SizedBox(
+            height: 120,
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _allSession(List<Map<String, dynamic>> gridViewContents) {
+    return Container(
+      height: 460,
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: darkgreyColor,
+        borderRadius: mediumBorderRadius(),
+      ),
+      child: Column(
+        children: [
           Container(
-            height: 400,
-            padding: const EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              color: darkgreyColor,
-              borderRadius: mediumBorderRadius(),
-            ),
-            child: Column(
+            margin: const EdgeInsets.only(bottom: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                const Text(
+                  'All Session',
+                  style: TextStyle(
+                    color: blackColor,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 Container(
-                  margin: const EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration(
+                    color: whiteColor,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  padding: const EdgeInsets.all(4),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'All Session',
-                        style: TextStyle(
-                          color: blackColor,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
                       Container(
+                        padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
                           color: whiteColor,
                           borderRadius: BorderRadius.circular(100),
                         ),
-                        padding: const EdgeInsets.all(4),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                color: whiteColor,
-                                borderRadius: BorderRadius.circular(100),
-                              ),
-                              child: const Icon(Icons.list,
-                                  size: 18, color: Colors.grey),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.all(5),
-                              decoration: const BoxDecoration(
-                                  color: Colors.black, shape: BoxShape.circle),
-                              child: const Icon(
-                                Icons.grid_view_rounded,
-                                size: 14,
-                                color: whiteColor,
-                              ),
-                            ),
-                          ],
+                        child: const Icon(Icons.list,
+                            size: 18, color: Colors.grey),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: const BoxDecoration(
+                            color: Colors.black, shape: BoxShape.circle),
+                        child: const Icon(
+                          Icons.grid_view_rounded,
+                          size: 14,
+                          color: whiteColor,
                         ),
                       ),
                     ],
                   ),
                 ),
-                Expanded(
-                  child: GridView.builder(
-                    shrinkWrap: true,
-                    itemCount: gridViewContents.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 10.0,
-                      crossAxisSpacing: 10.0,
-                      childAspectRatio: 3 / 2,
-                    ),
-                    itemBuilder: (context, index) {
-                      return _gridViewItem(
-                        onTap: () {
-                          if (gridViewContents[index]['title']! ==
-                              'Interview') {
-                            Get.to(
-                              const SessionPage(),
-                            );
-                          }
-                        },
-                        title: gridViewContents[index]['title']!,
-                        icon: gridViewContents[index]['icon']!,
-                        isLock: gridViewContents[index]['isLock']!,
-                        difficulty: gridViewContents[index]['difficulty']!,
-                        backgroundColor: Color(
-                          gridViewContents[index]['backgroundColor']!,
-                        ),
-                      );
-                    },
-                  ),
-                )
               ],
             ),
-          )
+          ),
+          Expanded(
+            child: GridView.builder(
+              shrinkWrap: true,
+              itemCount: gridViewContents.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 10.0,
+                crossAxisSpacing: 10.0,
+                childAspectRatio: 3 / 2,
+              ),
+              itemBuilder: (context, index) {
+                return _gridViewItem(
+                  onTap: () {
+                    if (!gridViewContents[index]['isLock']!) {
+                      Get.to(
+                        SessionPage(
+                          title: gridViewContents[index]['title']!,
+                        ),
+                      );
+                    }
+                  },
+                  title: gridViewContents[index]['title']!,
+                  icon: gridViewContents[index]['icon']!,
+                  isLock: gridViewContents[index]['isLock']!,
+                  difficulty: gridViewContents[index]['difficulty']!,
+                  backgroundColor: Color(
+                    gridViewContents[index]['backgroundColor']!,
+                  ),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );

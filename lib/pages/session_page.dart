@@ -1,7 +1,12 @@
 part of 'pages.dart';
 
 class SessionPage extends StatelessWidget {
-  const SessionPage({super.key});
+  const SessionPage({
+    super.key,
+    required this.title,
+  });
+
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +32,9 @@ class SessionPage extends StatelessWidget {
                           Get.back();
                         },
                       ),
-                      const Text(
-                        'Interview',
-                        style: TextStyle(
+                      Text(
+                        title,
+                        style: const TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       Container(
