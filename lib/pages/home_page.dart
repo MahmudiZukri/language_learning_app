@@ -242,9 +242,12 @@ class HomePage extends StatelessWidget {
                 return _gridViewItem(
                   onTap: () {
                     if (!gridViewContents[index]['isLock']!) {
-                      Get.to(
-                        SessionPage(
-                          title: gridViewContents[index]['title']!,
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SessionPage(
+                            title: gridViewContents[index]['title']!,
+                          ),
                         ),
                       );
                     }
