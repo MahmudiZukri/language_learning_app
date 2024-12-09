@@ -5,24 +5,43 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider<HomeBloc>(
+      create: (context) => HomeBloc(),
+      child: const HomePageScaffold(),
+    );
+  }
+}
+
+class HomePageScaffold extends StatelessWidget {
+  const HomePageScaffold({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      body: SafeArea(
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  _header(),
-                  _content(),
-                ],
-              ),
+      body: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          return SafeArea(
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      _header(),
+                      _content(
+                        context: context,
+                        isListView: state.isListView,
+                      ),
+                    ],
+                  ),
+                ),
+                _floatingBottomNavBar(context: context)
+              ],
             ),
-            _floatingBottomNavBar(context: context)
-          ],
-        ),
+          );
+        },
       ),
     );
   }
@@ -98,7 +117,10 @@ class HomePage extends StatelessWidget {
         ),
       );
 
-  Widget _content() {
+  Widget _content({
+    required BuildContext context,
+    required bool isListView,
+  }) {
     final List<Map<String, dynamic>> gridViewContents = [
       {
         'icon': '😊',
@@ -147,23 +169,39 @@ class HomePage extends StatelessWidget {
       child: ListView(
         children: [
           const SizedBox(height: 10.0),
-          _spendTimeDetails(),
+          _spendTimeDetails(context: context, isListView: isListView),
           const SizedBox(height: 14),
-          Row(
-            children: [
-              _customCard(
-                  icon: '📕',
-                  title: 'My Sentences',
-                  containerColor: mySentenceColor),
-              const SizedBox(width: 14.0),
-              _customCard(
-                  icon: '🔤', title: 'My Word', containerColor: myWordColor),
-            ],
+          isListView
+              ? const SizedBox()
+              : Row(
+                  children: [
+                    _customCard(
+                        icon: '📕',
+                        title: 'My Sentences',
+                        containerColor: mySentenceColor),
+                    const SizedBox(width: 14.0),
+                    _customCard(
+                        icon: '🔤',
+                        title: 'My Word',
+                        containerColor: myWordColor),
+                  ],
+                ),
+          const SizedBox(height: 14),
+          _customListCard(
+            asset: isListView ? '🛩️' : '😊',
+            backgroundColor: isListView ? mySentenceColor : myWordColor,
+            title: isListView ? 'Airport' : 'The Basic',
+            rating: isListView ? '⭐️37' : '⭐️18',
+            desc: isListView
+                ? 'Learn to navigate the airport, go through customs, buy ticket and much more.'
+                : 'Learn to be emphatic and considerate of others feeling and opinions.',
           ),
           const SizedBox(height: 14),
-          _theBasic(),
-          const SizedBox(height: 14),
-          _allSession(gridViewContents),
+          _allSession(
+            context: context,
+            gridViewContents: gridViewContents,
+            isListView: isListView,
+          ),
           const SizedBox(
             height: 120,
           )
@@ -172,9 +210,12 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _allSession(List<Map<String, dynamic>> gridViewContents) {
+  Widget _allSession({
+    required BuildContext context,
+    required bool isListView,
+    required List<Map<String, dynamic>> gridViewContents,
+  }) {
     return Container(
-      height: 460,
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: darkgreyColor,
@@ -195,75 +236,136 @@ class HomePage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: whiteColor,
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  padding: const EdgeInsets.all(4),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          color: whiteColor,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: const Icon(Icons.list,
-                            size: 18, color: Colors.grey),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(5),
-                        decoration: const BoxDecoration(
-                            color: Colors.black, shape: BoxShape.circle),
-                        child: const Icon(
-                          Icons.grid_view_rounded,
-                          size: 14,
-                          color: whiteColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                _sessionSwitchBtn(context: context, isListView: isListView),
               ],
             ),
           ),
-          Expanded(
-            child: GridView.builder(
-              shrinkWrap: true,
-              itemCount: gridViewContents.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 10.0,
-                crossAxisSpacing: 10.0,
-                childAspectRatio: 3 / 2,
-              ),
-              itemBuilder: (context, index) {
-                return _gridViewItem(
-                  onTap: () {
-                    if (!gridViewContents[index]['isLock']!) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SessionPage(
-                            title: gridViewContents[index]['title']!,
+          isListView
+              ? Column(
+                  children: [
+                    _customListCard(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const SessionPage(title: 'Transportation'),
                           ),
-                        ),
-                      );
-                    }
-                  },
-                  title: gridViewContents[index]['title']!,
-                  icon: gridViewContents[index]['icon']!,
-                  isLock: gridViewContents[index]['isLock']!,
-                  difficulty: gridViewContents[index]['difficulty']!,
-                  backgroundColor: Color(
-                    gridViewContents[index]['backgroundColor']!,
+                        );
+                      },
+                      asset: '🚌',
+                      isLock: false,
+                      title: 'Transportation',
+                      lesson: '60 Lessons',
+                      backgroundColor: transportationColor,
+                      desc:
+                          'Learn to explore the city by various transportation options.',
+                    ),
+                    const SizedBox(height: 16.0),
+                    _customListCard(
+                      asset: '🐰',
+                      isLock: true,
+                      title: 'Pet',
+                      lesson: '40 Lessons',
+                      backgroundColor: familyColor,
+                      desc:
+                          'Learn to explore the city by various transportation options.',
+                    ),
+                    const SizedBox(height: 16.0),
+                    _customListCard(
+                      asset: '🥘',
+                      isLock: true,
+                      title: 'Food',
+                      lesson: '25 Lessons',
+                      backgroundColor: theBasicColor,
+                      desc:
+                          'Learn to explore the city by various transportation options.',
+                    ),
+                  ],
+                )
+              : GridView.builder(
+                  shrinkWrap: true,
+                  itemCount: gridViewContents.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10.0,
+                    crossAxisSpacing: 10.0,
+                    childAspectRatio: 3 / 2,
                   ),
-                );
-              },
-            ),
-          ),
+                  itemBuilder: (context, index) {
+                    return _gridViewItem(
+                      onTap: () {
+                        if (!gridViewContents[index]['isLock']!) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SessionPage(
+                                title: gridViewContents[index]['title']!,
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                      title: gridViewContents[index]['title']!,
+                      icon: gridViewContents[index]['icon']!,
+                      isLock: gridViewContents[index]['isLock']!,
+                      difficulty: gridViewContents[index]['difficulty']!,
+                      backgroundColor: Color(
+                        gridViewContents[index]['backgroundColor']!,
+                      ),
+                    );
+                  },
+                ),
         ],
+      ),
+    );
+  }
+
+  GestureDetector _sessionSwitchBtn({
+    required BuildContext context,
+    required bool isListView,
+  }) {
+    return GestureDetector(
+      onTap: () {
+        context.read<HomeBloc>().add(
+              const HomeEvent.changeView(),
+            );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: whiteColor,
+          borderRadius: BorderRadius.circular(100),
+        ),
+        padding: const EdgeInsets.all(4),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: isListView ? blackColor : whiteColor,
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: Icon(
+                Icons.view_list_rounded,
+                size: 16,
+                color: isListView ? whiteColor : Colors.grey,
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: isListView ? whiteColor : blackColor,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                isListView ? Icons.grid_view : Icons.grid_view_rounded,
+                size: 16,
+                color: isListView ? Colors.grey : whiteColor,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -311,26 +413,9 @@ class HomePage extends StatelessWidget {
                 ),
               ],
             ),
-            FittedBox(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: isLock ? whiteColor : primaryColor,
-                  borderRadius: mediumBorderRadius(),
-                ),
-                child: Row(
-                  children: [
-                    Text(
-                      '${isLock ? '🔐' : '🔓'}$difficulty',
-                      style: TextStyle(
-                        color: isLock ? Colors.grey : whiteColor,
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            PrimaryContainerWidget(
+              isLock: isLock,
+              value: difficulty,
             )
           ],
         ),
@@ -338,79 +423,159 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Container _theBasic() => Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-            color: whiteColor,
-            borderRadius: mediumBorderRadius(),
-            boxShadow: boxShadow()),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: 52,
-              width: 52,
-              padding: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                color: myWordColor,
-                borderRadius: BorderRadius.circular(10.0),
-                boxShadow: boxShadow(),
-              ),
-              child: const Center(
-                child: Text(
-                  '😊',
-                  style: TextStyle(fontSize: 26.0),
+  Widget _customListCard({
+    required String asset,
+    required String title,
+    required String desc,
+    required Color backgroundColor,
+    Function()? onTap,
+    bool? isLock,
+    String? rating,
+    String? lesson,
+  }) =>
+      GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+              color: whiteColor,
+              borderRadius: mediumBorderRadius(),
+              boxShadow: boxShadow()),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: 52,
+                width: 52,
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  color: backgroundColor,
+                  borderRadius: smallBorderRadius(),
+                  boxShadow: boxShadow(),
+                ),
+                child: Center(
+                  child: Text(
+                    asset,
+                    style: const TextStyle(fontSize: 26.0),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(width: 14.0),
-            Expanded(
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'The Basic',
-                        style: TextStyle(
-                          color: blackColor,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          RichText(
-                            text: const TextSpan(
-                              text: '⭐️18',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: blackColor,
-                              ),
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: '/50',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
-                              ],
-                            ),
+              const SizedBox(width: 14.0),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          title,
+                          style: const TextStyle(
+                            color: blackColor,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const Text(
-                      'Learn to be emphatic and considerate of others feeling and opinions.'),
-                ],
-              ),
-            )
-          ],
+                        ),
+                        if (rating != null)
+                          Row(
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  text: rating,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: blackColor,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: '/50',
+                                      style: TextStyle(
+                                        color: Colors.black.withOpacity(0.5),
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Text(
+                      desc,
+                      style: TextStyle(
+                          color: blackColor.withOpacity(0.8),
+                          fontWeight: FontWeight.w500),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    if (lesson != null)
+                      PrimaryContainerWidget(
+                        isLock: isLock!,
+                        value: lesson,
+                        fontColor: whiteColor,
+                        color:
+                            isLock ? blackColor.withOpacity(0.4) : primaryColor,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 6,
+                          horizontal: 12,
+                        ),
+                      )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       );
 
-  Container _spendTimeDetails() {
+  Container _spendTimeDetails({
+    required BuildContext context,
+    required bool isListView,
+  }) {
+    final List<Map<String, dynamic>> streakValues = [
+      {
+        'day': '12',
+        'value': true,
+        'isSelected': false,
+        'isAvailable': true,
+      },
+      {
+        'day': '13',
+        'value': true,
+        'isSelected': false,
+        'isAvailable': true,
+      },
+      {
+        'day': '14',
+        'value': false,
+        'isSelected': false,
+        'isAvailable': true,
+      },
+      {
+        'day': '15',
+        'value': true,
+        'isSelected': true,
+        'isAvailable': true,
+      },
+      {
+        'day': '16',
+        'value': false,
+        'isSelected': false,
+        'isAvailable': false,
+      },
+      {
+        'day': '17',
+        'value': false,
+        'isSelected': false,
+        'isAvailable': false,
+      },
+    ];
+
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
@@ -427,63 +592,192 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    'You spend ',
-                    style: TextStyle(
-                        color: whiteColor,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  Text(
-                    '1h 2m 3s',
-                    style: TextStyle(
-                        color: whiteColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18.0),
-                  ),
-                ],
-              ),
-              Text(
-                'Talking in France 👏🏻',
-                style: TextStyle(
-                    color: whiteColor,
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w600),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Column(
-            children: [
-              RichText(
-                text: const TextSpan(
-                  style: TextStyle(
-                    color: whiteColor,
-                    fontSize: 12.0,
-                  ),
+          isListView
+              ? const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TextSpan(text: 'Complete '),
-                    TextSpan(
-                      text: '19 more',
-                      style: TextStyle(fontWeight: FontWeight.w700),
+                    Text(
+                      '15 Days on Streak 💪🏻',
+                      style: TextStyle(
+                          color: whiteColor,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w600),
                     ),
-                    TextSpan(text: ' speaking session for your '),
-                    TextSpan(
-                      text: 'Space Star',
-                      style: TextStyle(fontWeight: FontWeight.w700),
+                    CircleContainerWidget(
+                      size: 26,
+                      asset: Icons.close,
+                      iconSize: 12,
+                      iconColor: primaryColor,
                     ),
-                    TextSpan(text: ' certificate!'),
+                  ],
+                )
+              : const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          'You spend ',
+                          style: TextStyle(
+                              color: whiteColor,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        Text(
+                          '1h 2m 3s',
+                          style: TextStyle(
+                              color: whiteColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20.0),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      'Talking in France 👏🏻',
+                      style: TextStyle(
+                        color: whiteColor,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ],
                 ),
-              ),
-            ],
-          ),
+          const SizedBox(height: 16),
+          isListView
+              ? Column(
+                  children: [
+                    const Text(
+                      "A lesson a day will help you keep your streak, but there are still more lesson for today. Let's continue!",
+                      style: TextStyle(
+                        color: whiteColor,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    IntrinsicHeight(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: List.generate(
+                          streakValues.length,
+                          (index) => _streakItem(
+                            context: context,
+                            day: streakValues[index]['day']!,
+                            value: streakValues[index]['value']!,
+                            isSelected: streakValues[index]['isSelected']!,
+                            isAvailable: streakValues[index]['isAvailable']!,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              : Column(
+                  children: [
+                    RichText(
+                      text: const TextSpan(
+                        style: TextStyle(
+                          color: whiteColor,
+                          fontSize: 12.0,
+                        ),
+                        children: [
+                          TextSpan(text: 'Complete '),
+                          TextSpan(
+                            text: '19 more',
+                            style: TextStyle(fontWeight: FontWeight.w700),
+                          ),
+                          TextSpan(text: ' speaking session for your '),
+                          TextSpan(
+                            text: 'Space Star',
+                            style: TextStyle(fontWeight: FontWeight.w700),
+                          ),
+                          TextSpan(text: ' certificate!'),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
         ],
+      ),
+    );
+  }
+
+  Widget _streakItem({
+    required BuildContext context,
+    required String day,
+    required bool value,
+    required bool isSelected,
+    required bool isAvailable,
+  }) {
+    return Container(
+      width: (MediaQuery.of(context).size.width / 6) - 20,
+      padding: const EdgeInsets.symmetric(
+        vertical: 14.0,
+      ),
+      decoration: BoxDecoration(
+        color: isSelected ? whiteColor : secondaryColor,
+        borderRadius: smallBorderRadius(),
+      ),
+      child: Column(
+        children: [
+          Text(
+            'Day $day',
+            style: TextStyle(
+              fontSize: 9.0,
+              color: !isAvailable
+                  ? whiteColor.withOpacity(0.3)
+                  : isSelected
+                      ? blackColor
+                      : whiteColor,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 8.0),
+          Container(
+            padding: const EdgeInsets.all(3),
+            decoration: BoxDecoration(
+              color: !isAvailable
+                  ? whiteColor.withOpacity(0.3)
+                  : isSelected
+                      ? blackColor.withOpacity(0.1)
+                      : whiteColor,
+              shape: BoxShape.circle,
+            ),
+            child: Container(
+              padding: const EdgeInsets.all(3),
+              decoration: BoxDecoration(
+                color: !isAvailable ? secondaryColor : whiteColor,
+                shape: BoxShape.circle,
+              ),
+              child: !isAvailable
+                  ? const SizedBox(
+                      height: 12,
+                      width: 12,
+                    )
+                  : value
+                      ? const Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                          size: 12,
+                        )
+                      : _redDot(),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _redDot() {
+    return Center(
+      child: Container(
+        padding: const EdgeInsets.all(4),
+        decoration:
+            const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+        child: Container(
+          height: 4.0,
+          width: 4.0,
+          decoration:
+              const BoxDecoration(color: whiteColor, shape: BoxShape.circle),
+        ),
       ),
     );
   }

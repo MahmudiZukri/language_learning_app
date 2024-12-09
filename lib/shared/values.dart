@@ -1,5 +1,6 @@
 part of 'shared.dart';
 
+BorderRadius smallBorderRadius() => BorderRadius.circular(10.0);
 BorderRadius mediumBorderRadius() => BorderRadius.circular(16.0);
 List<BoxShadow> boxShadow() => [
       BoxShadow(

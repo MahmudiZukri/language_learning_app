@@ -19,32 +19,44 @@ mixin _$SessionEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() answerOnTap,
+    required TResult Function() skipQuestion,
+    required TResult Function() tapPic,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? answerOnTap,
+    TResult? Function()? skipQuestion,
+    TResult? Function()? tapPic,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? answerOnTap,
+    TResult Function()? skipQuestion,
+    TResult Function()? tapPic,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_AnswerOnTap value) answerOnTap,
+    required TResult Function(_SkipQuestion value) skipQuestion,
+    required TResult Function(_TapPic value) tapPic,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_AnswerOnTap value)? answerOnTap,
+    TResult? Function(_SkipQuestion value)? skipQuestion,
+    TResult? Function(_TapPic value)? tapPic,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_AnswerOnTap value)? answerOnTap,
+    TResult Function(_SkipQuestion value)? skipQuestion,
+    TResult Function(_TapPic value)? tapPic,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -107,6 +119,8 @@ class _$AnswerOnTapImpl implements _AnswerOnTap {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() answerOnTap,
+    required TResult Function() skipQuestion,
+    required TResult Function() tapPic,
   }) {
     return answerOnTap();
   }
@@ -115,6 +129,8 @@ class _$AnswerOnTapImpl implements _AnswerOnTap {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? answerOnTap,
+    TResult? Function()? skipQuestion,
+    TResult? Function()? tapPic,
   }) {
     return answerOnTap?.call();
   }
@@ -123,6 +139,8 @@ class _$AnswerOnTapImpl implements _AnswerOnTap {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? answerOnTap,
+    TResult Function()? skipQuestion,
+    TResult Function()? tapPic,
     required TResult orElse(),
   }) {
     if (answerOnTap != null) {
@@ -135,6 +153,8 @@ class _$AnswerOnTapImpl implements _AnswerOnTap {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_AnswerOnTap value) answerOnTap,
+    required TResult Function(_SkipQuestion value) skipQuestion,
+    required TResult Function(_TapPic value) tapPic,
   }) {
     return answerOnTap(this);
   }
@@ -143,6 +163,8 @@ class _$AnswerOnTapImpl implements _AnswerOnTap {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_AnswerOnTap value)? answerOnTap,
+    TResult? Function(_SkipQuestion value)? skipQuestion,
+    TResult? Function(_TapPic value)? tapPic,
   }) {
     return answerOnTap?.call(this);
   }
@@ -151,6 +173,8 @@ class _$AnswerOnTapImpl implements _AnswerOnTap {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_AnswerOnTap value)? answerOnTap,
+    TResult Function(_SkipQuestion value)? skipQuestion,
+    TResult Function(_TapPic value)? tapPic,
     required TResult orElse(),
   }) {
     if (answerOnTap != null) {
@@ -165,8 +189,226 @@ abstract class _AnswerOnTap implements SessionEvent {
 }
 
 /// @nodoc
+abstract class _$$SkipQuestionImplCopyWith<$Res> {
+  factory _$$SkipQuestionImplCopyWith(
+          _$SkipQuestionImpl value, $Res Function(_$SkipQuestionImpl) then) =
+      __$$SkipQuestionImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$SkipQuestionImplCopyWithImpl<$Res>
+    extends _$SessionEventCopyWithImpl<$Res, _$SkipQuestionImpl>
+    implements _$$SkipQuestionImplCopyWith<$Res> {
+  __$$SkipQuestionImplCopyWithImpl(
+      _$SkipQuestionImpl _value, $Res Function(_$SkipQuestionImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$SkipQuestionImpl implements _SkipQuestion {
+  const _$SkipQuestionImpl();
+
+  @override
+  String toString() {
+    return 'SessionEvent.skipQuestion()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$SkipQuestionImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() answerOnTap,
+    required TResult Function() skipQuestion,
+    required TResult Function() tapPic,
+  }) {
+    return skipQuestion();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? answerOnTap,
+    TResult? Function()? skipQuestion,
+    TResult? Function()? tapPic,
+  }) {
+    return skipQuestion?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? answerOnTap,
+    TResult Function()? skipQuestion,
+    TResult Function()? tapPic,
+    required TResult orElse(),
+  }) {
+    if (skipQuestion != null) {
+      return skipQuestion();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_AnswerOnTap value) answerOnTap,
+    required TResult Function(_SkipQuestion value) skipQuestion,
+    required TResult Function(_TapPic value) tapPic,
+  }) {
+    return skipQuestion(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_AnswerOnTap value)? answerOnTap,
+    TResult? Function(_SkipQuestion value)? skipQuestion,
+    TResult? Function(_TapPic value)? tapPic,
+  }) {
+    return skipQuestion?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_AnswerOnTap value)? answerOnTap,
+    TResult Function(_SkipQuestion value)? skipQuestion,
+    TResult Function(_TapPic value)? tapPic,
+    required TResult orElse(),
+  }) {
+    if (skipQuestion != null) {
+      return skipQuestion(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _SkipQuestion implements SessionEvent {
+  const factory _SkipQuestion() = _$SkipQuestionImpl;
+}
+
+/// @nodoc
+abstract class _$$TapPicImplCopyWith<$Res> {
+  factory _$$TapPicImplCopyWith(
+          _$TapPicImpl value, $Res Function(_$TapPicImpl) then) =
+      __$$TapPicImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$TapPicImplCopyWithImpl<$Res>
+    extends _$SessionEventCopyWithImpl<$Res, _$TapPicImpl>
+    implements _$$TapPicImplCopyWith<$Res> {
+  __$$TapPicImplCopyWithImpl(
+      _$TapPicImpl _value, $Res Function(_$TapPicImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$TapPicImpl implements _TapPic {
+  const _$TapPicImpl();
+
+  @override
+  String toString() {
+    return 'SessionEvent.tapPic()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$TapPicImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() answerOnTap,
+    required TResult Function() skipQuestion,
+    required TResult Function() tapPic,
+  }) {
+    return tapPic();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? answerOnTap,
+    TResult? Function()? skipQuestion,
+    TResult? Function()? tapPic,
+  }) {
+    return tapPic?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? answerOnTap,
+    TResult Function()? skipQuestion,
+    TResult Function()? tapPic,
+    required TResult orElse(),
+  }) {
+    if (tapPic != null) {
+      return tapPic();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_AnswerOnTap value) answerOnTap,
+    required TResult Function(_SkipQuestion value) skipQuestion,
+    required TResult Function(_TapPic value) tapPic,
+  }) {
+    return tapPic(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_AnswerOnTap value)? answerOnTap,
+    TResult? Function(_SkipQuestion value)? skipQuestion,
+    TResult? Function(_TapPic value)? tapPic,
+  }) {
+    return tapPic?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_AnswerOnTap value)? answerOnTap,
+    TResult Function(_SkipQuestion value)? skipQuestion,
+    TResult Function(_TapPic value)? tapPic,
+    required TResult orElse(),
+  }) {
+    if (tapPic != null) {
+      return tapPic(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _TapPic implements SessionEvent {
+  const factory _TapPic() = _$TapPicImpl;
+}
+
+/// @nodoc
 mixin _$SessionState {
   bool get isAnswered => throw _privateConstructorUsedError;
+  bool get isSkipped => throw _privateConstructorUsedError;
+  bool get isTappedPic => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SessionStateCopyWith<SessionState> get copyWith =>
@@ -179,7 +421,7 @@ abstract class $SessionStateCopyWith<$Res> {
           SessionState value, $Res Function(SessionState) then) =
       _$SessionStateCopyWithImpl<$Res, SessionState>;
   @useResult
-  $Res call({bool isAnswered});
+  $Res call({bool isAnswered, bool isSkipped, bool isTappedPic});
 }
 
 /// @nodoc
@@ -196,11 +438,21 @@ class _$SessionStateCopyWithImpl<$Res, $Val extends SessionState>
   @override
   $Res call({
     Object? isAnswered = null,
+    Object? isSkipped = null,
+    Object? isTappedPic = null,
   }) {
     return _then(_value.copyWith(
       isAnswered: null == isAnswered
           ? _value.isAnswered
           : isAnswered // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isSkipped: null == isSkipped
+          ? _value.isSkipped
+          : isSkipped // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isTappedPic: null == isTappedPic
+          ? _value.isTappedPic
+          : isTappedPic // ignore: cast_nullable_to_non_nullable
               as bool,
     ) as $Val);
   }
@@ -214,7 +466,7 @@ abstract class _$$SessionStateImplCopyWith<$Res>
       __$$SessionStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isAnswered});
+  $Res call({bool isAnswered, bool isSkipped, bool isTappedPic});
 }
 
 /// @nodoc
@@ -229,11 +481,21 @@ class __$$SessionStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isAnswered = null,
+    Object? isSkipped = null,
+    Object? isTappedPic = null,
   }) {
     return _then(_$SessionStateImpl(
       isAnswered: null == isAnswered
           ? _value.isAnswered
           : isAnswered // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isSkipped: null == isSkipped
+          ? _value.isSkipped
+          : isSkipped // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isTappedPic: null == isTappedPic
+          ? _value.isTappedPic
+          : isTappedPic // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -242,14 +504,21 @@ class __$$SessionStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SessionStateImpl implements _SessionState {
-  const _$SessionStateImpl({required this.isAnswered});
+  const _$SessionStateImpl(
+      {required this.isAnswered,
+      required this.isSkipped,
+      required this.isTappedPic});
 
   @override
   final bool isAnswered;
+  @override
+  final bool isSkipped;
+  @override
+  final bool isTappedPic;
 
   @override
   String toString() {
-    return 'SessionState(isAnswered: $isAnswered)';
+    return 'SessionState(isAnswered: $isAnswered, isSkipped: $isSkipped, isTappedPic: $isTappedPic)';
   }
 
   @override
@@ -258,11 +527,16 @@ class _$SessionStateImpl implements _SessionState {
         (other.runtimeType == runtimeType &&
             other is _$SessionStateImpl &&
             (identical(other.isAnswered, isAnswered) ||
-                other.isAnswered == isAnswered));
+                other.isAnswered == isAnswered) &&
+            (identical(other.isSkipped, isSkipped) ||
+                other.isSkipped == isSkipped) &&
+            (identical(other.isTappedPic, isTappedPic) ||
+                other.isTappedPic == isTappedPic));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isAnswered);
+  int get hashCode =>
+      Object.hash(runtimeType, isAnswered, isSkipped, isTappedPic);
 
   @JsonKey(ignore: true)
   @override
@@ -272,11 +546,17 @@ class _$SessionStateImpl implements _SessionState {
 }
 
 abstract class _SessionState implements SessionState {
-  const factory _SessionState({required final bool isAnswered}) =
-      _$SessionStateImpl;
+  const factory _SessionState(
+      {required final bool isAnswered,
+      required final bool isSkipped,
+      required final bool isTappedPic}) = _$SessionStateImpl;
 
   @override
   bool get isAnswered;
+  @override
+  bool get isSkipped;
+  @override
+  bool get isTappedPic;
   @override
   @JsonKey(ignore: true)
   _$$SessionStateImplCopyWith<_$SessionStateImpl> get copyWith =>

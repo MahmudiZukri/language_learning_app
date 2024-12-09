@@ -15,10 +15,25 @@ class SessionBloc extends Bloc<SessionEvent, SessionState> {
     on<SessionEvent>(
       (event, emit) async {
         event.map(
+          tapPic: (e) {
+            emit(
+              state.copyWith(
+                isTappedPic: !state.isTappedPic,
+                isAnswered: true,
+              ),
+            );
+          },
           answerOnTap: (e) async {
             emit(
               state.copyWith(
                 isAnswered: !state.isAnswered,
+              ),
+            );
+          },
+          skipQuestion: (e) {
+            emit(
+              state.copyWith(
+                isSkipped: !state.isSkipped,
               ),
             );
           },

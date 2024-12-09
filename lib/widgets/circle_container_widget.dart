@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:language_learning_app/shared/shared.dart';
+part of 'widgets.dart';
 
 class CircleContainerWidget<T> extends StatelessWidget {
   const CircleContainerWidget({
@@ -8,14 +7,19 @@ class CircleContainerWidget<T> extends StatelessWidget {
     this.margin,
     this.iconColor,
     this.backgroundColor,
+    this.size,
+    this.iconSize,
     required this.asset,
   });
 
-  final T asset;
   final EdgeInsetsGeometry? margin;
   final Function()? onTap;
   final Color? iconColor;
   final Color? backgroundColor;
+  final double? size;
+  final double? iconSize;
+
+  final T asset;
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +27,8 @@ class CircleContainerWidget<T> extends StatelessWidget {
       onTap: onTap,
       child: Container(
         margin: margin,
-        height: 42.0,
-        width: 42.0,
+        height: size ?? 42.0,
+        width: size ?? 42.0,
         padding: const EdgeInsets.all(3.0),
         decoration: BoxDecoration(
             color:
@@ -51,7 +55,8 @@ class CircleContainerWidget<T> extends StatelessWidget {
                     asset as String,
                     fit: BoxFit.fill,
                   )
-                : Icon(asset as IconData, size: 18, color: iconColor),
+                : Icon(asset as IconData,
+                    size: iconSize ?? 18, color: iconColor),
           ),
         ),
       ),
